@@ -1,0 +1,96 @@
+/* ============================================================
+   Стили блока «Команда»
+   Файл подключается только к team.html
+   ============================================================ */
+
+/* --- Сброс дефолтных отступов --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #fff;
+}
+
+/* ============================================================
+   Сам блок
+   ============================================================ */
+.team {
+  background-color: #4858a7;   /* фирменный синий travelline, насыщеннее */
+  padding: 80px 40px;
+}
+
+/* --- Заголовок и подзаголовок --- */
+.team__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.team__title {
+  font-size: 72px;             /* крупнее, как в оригинале */
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.team__subtitle {
+  font-size: 28px;             /* раньше 20 — выглядел слишком тихо */
+  font-weight: 400;
+  opacity: 0.9;                /* было 0.8 — стало чуть контрастнее */
+}
+
+/* ============================================================
+   Ряд карточек
+   ============================================================ */
+.team__list {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+/* ============================================================
+   Одна карточка
+   ============================================================ */
+.team-card {
+  position: relative;
+  flex: 0 0 320px;             /* было 240 — стало 320, ближе к оригиналу 336 */
+  height: 440px;               /* было 320 — пропорция теперь ~1.375, как в оригинале (477/336) */
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.team-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Тёмная подложка снизу с именем и должностью --- */
+.team-card__info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px;               /* было 16 — для большой карточки нужны крупнее отступы */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.team-card__name {
+  font-size: 24px;             /* было 18 — теперь читается крупно */
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.team-card__position {
+  font-size: 16px;             /* было 14 */
+  opacity: 0.85;
+}
