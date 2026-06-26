@@ -1,0 +1,214 @@
+/* ============================================================
+   Стили админки
+   Подключается из public/admin.html через <link href="/css/admin.css">
+   ============================================================ */
+
+/* --- Сброс дефолтных отступов --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f3f4f6;           /* светло-серый фон страницы */
+  color: #1f2937;                      /* тёмно-серый цвет текста */
+  min-height: 100vh;                   /* минимум на всю высоту экрана */
+}
+
+/* ============================================================
+   Шапка
+   ============================================================ */
+.admin-header {
+  display: flex;                       /* заголовок слева, ссылка справа */
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;    /* тонкая линия снизу для разделения */
+}
+
+.admin-header__title {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.admin-header__link {
+  color: #3b82f6;                      /* синий — это ссылка */
+  text-decoration: none;               /* убрать подчёркивание */
+  font-size: 14px;
+}
+
+.admin-header__link:hover {
+  text-decoration: underline;          /* подчеркнуть при наведении */
+}
+
+/* ============================================================
+   Основной контейнер
+   ============================================================ */
+.admin {
+  max-width: 900px;                    /* не растягивать на весь экран — формы удобнее в узкой колонке */
+  margin: 0 auto;                      /* центрировать по горизонтали */
+  padding: 40px 20px;
+  display: flex;                       /* секции в столбик */
+  flex-direction: column;
+  gap: 24px;                           /* промежуток между секциями */
+}
+
+/* ============================================================
+   Секция (карточка-блок)
+   ============================================================ */
+.admin-section {
+  background-color: #ffffff;
+  border-radius: 12px;                 /* скруглённые углы */
+  padding: 24px 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);  /* мягкая тень — карточка слегка приподнята */
+}
+
+.admin-section__title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;    /* тонкая линия под заголовком */
+}
+
+.admin-section__placeholder {
+  color: #9ca3af;                      /* приглушённый серый — это не активный контент */
+  font-style: italic;
+  font-size: 14px;
+}
+
+/* ============================================================
+   Список карточек сотрудников (контейнер)
+   admin.js будет наполнять div#team-members карточками
+   ============================================================ */
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                           /* промежуток между карточками */
+  margin-bottom: 24px;                 /* отступ от кнопок действий */
+}
+
+/* ============================================================
+   Карточка одного сотрудника (admin.js будет создавать)
+   ============================================================ */
+.admin-card {
+  background-color: #f9fafb;           /* чуть темнее основного фона */
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.admin-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.admin-card__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-card__delete {
+  background: none;
+  border: none;
+  color: #ef4444;                      /* красный — кнопка удаления */
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.admin-card__delete:hover {
+  background-color: #fee2e2;           /* светло-розовый при наведении */
+}
+
+/* --- Поле в карточке: лейбл + input --- */
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.admin-field__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.admin-field__input {
+  font-family: inherit;                /* унаследовать шрифт от body */
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  outline: none;                       /* убрать дефолтную синюю обводку */
+}
+
+.admin-field__input:focus {
+  border-color: #3b82f6;               /* синяя рамка при фокусе */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);  /* мягкое голубое свечение */
+}
+
+/* ============================================================
+   Кнопки действий внизу секции
+   ============================================================ */
+.admin-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.admin-btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: #ffffff;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.admin-btn:hover {
+  background-color: #f9fafb;
+}
+
+/* --- Основная кнопка (Сохранить) — синяя --- */
+.admin-btn--primary {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+.admin-btn--primary:hover {
+  background-color: #2563eb;
+}
+
+/* ============================================================
+   Сообщение о статусе (после Сохранить)
+   admin.js будет добавлять класс --success или --error
+   ============================================================ */
+.admin-status {
+  margin-top: 16px;
+  font-size: 14px;
+  min-height: 20px;                    /* зарезервировать место, чтобы кнопки не прыгали */
+}
+
+.admin-status--success {
+  color: #10b981;                      /* зелёный */
+}
+
+.admin-status--error {
+  color: #ef4444;                      /* красный */
+}

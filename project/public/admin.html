@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админка — TL:TECH</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <!-- Шапка админки -->
+  <header class="admin-header">
+    <h1 class="admin-header__title">Админка TL:TECH</h1>
+    <a class="admin-header__link" href="/" target="_blank">Открыть публичный сайт →</a>
+  </header>
+
+  <main class="admin">
+
+    <!-- ===== Hero ===== -->
+    <section class="admin-section" id="hero-admin">
+      <h2 class="admin-section__title">Hero</h2>
+      <!-- TODO: форму делает кто-то другой -->
+      <p class="admin-section__placeholder">Здесь будет форма редактирования Hero.</p>
+    </section>
+
+    <!-- ===== Команда (наша секция) ===== -->
+    <section class="admin-section" id="team-admin">
+      <h2 class="admin-section__title">Команда</h2>
+
+      <!-- Сюда admin.js вставит карточки сотрудников. По одной форме на человека. -->
+      <div id="team-members" class="admin-list"></div>
+
+      <!-- Действия: добавить нового, сохранить всё -->
+      <div class="admin-actions">
+        <button type="button" id="add-member-btn" class="admin-btn">
+          + Добавить сотрудника
+        </button>
+        <button type="button" id="save-team-btn" class="admin-btn admin-btn--primary">
+          Сохранить изменения команды
+        </button>
+      </div>
+
+      <!-- Сюда admin.js будет писать «Сохранено» или сообщения об ошибке -->
+      <p id="team-status" class="admin-status"></p>
+    </section>
+
+    <!-- ===== Клиенты ===== -->
+    <section class="admin-section" id="clients-admin">
+      <h2 class="admin-section__title">Клиенты</h2>
+      <!-- TODO: форму делает кто-то другой -->
+      <p class="admin-section__placeholder">Здесь будет форма редактирования логотипов клиентов.</p>
+    </section>
+
+    <!-- ===== Вакансии ===== -->
+    <section class="admin-section" id="vacancies-admin">
+      <h2 class="admin-section__title">Вакансии</h2>
+      <!-- TODO: форму делает кто-то другой -->
+      <p class="admin-section__placeholder">Здесь будет форма редактирования вакансий.</p>
+    </section>
+
+    <!-- ===== Плюшки ===== -->
+    <section class="admin-section" id="benefits-admin">
+      <h2 class="admin-section__title">Плюшки</h2>
+      <!-- TODO: форму делает кто-то другой -->
+      <p class="admin-section__placeholder">Здесь будет форма редактирования плюшек.</p>
+    </section>
+
+  </main>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
