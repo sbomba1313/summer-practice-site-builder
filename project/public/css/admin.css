@@ -106,14 +106,35 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  cursor: pointer;                     /* указатель «рука» — намекает что можно кликнуть */
+  user-select: none;                   /* не выделять текст при двойном клике */
 }
 
-.admin-card__label {
-  font-size: 13px;
+.admin-card__title {
+  font-size: 16px;
   font-weight: 600;
+  color: #1f2937;                      /* основной тёмный */
+}
+
+/* --- Свёрнутая карточка: скрываем поля, прижимаем шапку --- */
+.admin-card--collapsed .admin-field {
+  display: none;
+}
+
+.admin-card--collapsed .admin-card__header {
+  margin-bottom: 0;                    /* без полей снизу шапке не нужен отступ */
+}
+
+/* Стрелочка-индикатор слева от названия */
+.admin-card__title::before {
+  content: "▾ ";                       /* ▾ — развёрнуто */
   color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: inline-block;
+  transition: transform 0.15s;         /* плавный поворот */
+}
+
+.admin-card--collapsed .admin-card__title::before {
+  content: "▸ ";                       /* ▸ — свёрнуто */
 }
 
 .admin-card__delete {
