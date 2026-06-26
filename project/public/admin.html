@@ -19,8 +19,34 @@
     <!-- ===== Hero ===== -->
     <section class="admin-section" id="hero-admin">
       <h2 class="admin-section__title">Hero</h2>
-      <!-- TODO: форму делает кто-то другой -->
-      <p class="admin-section__placeholder">Здесь будет форма редактирования Hero.</p>
+
+      <form id="hero-admin-form">
+        <div class="admin-field">
+          <label class="admin-field__label" for="hero-title-input">Заголовок</label>
+          <input class="admin-field__input" id="hero-title-input" name="title" type="text">
+        </div>
+
+        <div class="admin-field">
+          <label class="admin-field__label" for="hero-subtitle-input">Подзаголовок</label>
+          <textarea class="admin-field__input" id="hero-subtitle-input" name="subtitle" rows="3"></textarea>
+        </div>
+
+        <div class="admin-card__header">
+          <span class="admin-card__label">Статистика</span>
+        </div>
+
+        <div id="hero-stats-admin" class="admin-list"></div>
+
+        <div class="admin-actions">
+          <button type="submit" class="admin-btn admin-btn--primary">
+            Сохранить Hero
+          </button>
+        </div>
+
+        <p id="hero-status" class="admin-status"></p>
+      </form>
+
+      <script src="/js/admin%20hero.js"></script>
     </section>
 
     <!-- ===== Команда (наша секция) ===== -->
