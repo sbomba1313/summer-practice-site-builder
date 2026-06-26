@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // ============================================================
 // Сервер мини-конструктора сайтов
 // Запуск: node src/server.js  (или npm start)
@@ -47,4 +48,31 @@ app.post('/api/data', (req, res) => {
 // === 5. Запуск ===
 app.listen(PORT, () => {
   console.log(`Сервер запущен на http://localhost:${PORT}`);
+=======
+const express = require('express');
+const fs = require('fs/promises');
+const path = require('path');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const DATA_FILE = path.join(__dirname, '..', 'data', 'data.json');
+
+app.use(express.static(PUBLIC_DIR));
+
+app.get('/api/data', async (_req, res) => {
+  try {
+    const file = await fs.readFile(DATA_FILE, 'utf8');
+    const data = JSON.parse(file);
+
+    res.json(data);
+  } catch (error) {
+    console.error('Не получилось прочитать data.json:', error);
+    res.status(500).json({ error: 'Не получилось загрузить данные сайта' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Сервер запущен: http://localhost:${PORT}`);
+>>>>>>> Stashed changes
 });
