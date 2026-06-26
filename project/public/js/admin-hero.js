@@ -41,16 +41,20 @@ function fillHeroForm(hero) {
 }
 
 function createHeroStatCard(stat) {
+  // Стартуем свёрнутой — единый стиль с командой
   const card = document.createElement('div');
-  card.className = 'admin-card';
+  card.className = 'admin-card admin-card--collapsed';
   card.dataset.id = stat.id;
 
   const header = document.createElement('div');
   header.className = 'admin-card__header';
 
-  const label = document.createElement('span');
-  label.className = 'admin-card__label';
-  label.textContent = 'Пункт статистики';
+  // В шапке — «цифра + описание», чтобы свёрнутая карточка несла смысл
+  const title = document.createElement('span');
+  title.className = 'admin-card__title';
+  const composeTitle = (value, label) =>
+    [value, label].filter(Boolean).join(' — ') || 'Новый пункт';
+  title.textContent = composeTitle(stat.value, stat.label);
 
   const deleteBtn = document.createElement('button');
   deleteBtn.type = 'button';
@@ -58,12 +62,30 @@ function createHeroStatCard(stat) {
   deleteBtn.textContent = 'Удалить';
   deleteBtn.addEventListener('click', () => card.remove());
 
-  header.appendChild(label);
+  // Клик по шапке (кроме кнопки) — сворачивает/разворачивает
+  header.addEventListener('click', (event) => {
+    if (deleteBtn.contains(event.target)) return;
+    card.classList.toggle('admin-card--collapsed');
+  });
+
+  header.appendChild(title);
   header.appendChild(deleteBtn);
   card.appendChild(header);
 
-  card.appendChild(createHeroField('Цифра', 'value', stat.value));
-  card.appendChild(createHeroField('Описание', 'label', stat.label));
+  const valueField = createHeroField('Цифра', 'value', stat.value);
+  const labelField = createHeroField('Описание', 'label', stat.label);
+  card.appendChild(valueField);
+  card.appendChild(labelField);
+
+  // Живое обновление шапки при правке полей
+  const updateTitle = () => {
+    title.textContent = composeTitle(
+      valueField.querySelector('input').value,
+      labelField.querySelector('input').value
+    );
+  };
+  valueField.querySelector('input').addEventListener('input', updateTitle);
+  labelField.querySelector('input').addEventListener('input', updateTitle);
 
   return card;
 }

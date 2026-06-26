@@ -43,15 +43,11 @@ function createMemberCard(member) {
   deleteBtn.className = 'admin-card__delete';
   deleteBtn.textContent = '🗑 Удалить';
 
-  // Клик на «Удалить»: спросить подтверждение, потом убрать карточку со страницы.
-  // На сервер изменения уйдут только при нажатии «Сохранить».
+  // Клик на «Удалить»: убираем карточку со страницы.
+  // На сервер изменения уйдут только при нажатии «Сохранить»,
+  // поэтому случайное удаление лечится обновлением страницы.
   deleteBtn.addEventListener('click', () => {
-    const name = title.textContent;
-    const confirmed = window.confirm(`Удалить «${name}» из команды?`);
-    if (!confirmed) {
-      return;                          // пользователь нажал «Отмена» — ничего не делаем
-    }
-    card.remove();                     // убираем карточку из DOM
+    card.remove();
   });
 
   header.appendChild(title);
@@ -134,40 +130,77 @@ function bindAddButton() {
   addBtn.addEventListener('click', addEmptyMember);
 }
 
-// === ШАГ 4. Кнопка «Сохранить изменения команды» ===
+// === ШАГ 4–5. Кнопка «Сохранить изменения команды» + статус ===
+
+// Маленький хелпер: показать сообщение в #team-status.
+// type: 'progress' / 'success' / 'error' — задаёт цвет через CSS-классы.
+function setTeamStatus(message, type) {
+  const status = document.getElementById('team-status');
+  status.textContent = message;
+  status.className = 'admin-status';   // сброс модификаторов
+  if (type === 'success') status.classList.add('admin-status--success');
+  if (type === 'error') status.classList.add('admin-status--error');
+}
 
 async function saveTeam() {
-  // 1. Свежие данные с сервера — чтобы не затереть чужие правки (Hero, Клиенты и т.д.)
-  const response = await fetch('/api/data');
-  const data = await response.json();
+  const saveBtn = document.getElementById('save-team-btn');
 
-  // 2. Собираем массив сотрудников из всех карточек на странице
-  const cards = document.querySelectorAll('#team-members .admin-card');
-  const newMembers = [];
+  // Блокируем кнопку, чтобы пользователь не нажал второй раз пока летит запрос
+  saveBtn.disabled = true;
+  setTeamStatus('Сохраняю…', 'progress');
 
-  cards.forEach((card) => {
-    const member = {
-      id: Number(card.dataset.id),     // id из data-атрибута карточки
-    };
+  try {
+    // 1. Свежие данные с сервера — чтобы не затереть чужие правки (Hero, Клиенты и т.д.)
+    const getResponse = await fetch('/api/data');
+    if (!getResponse.ok) {
+      throw new Error('Сервер не отдал данные');
+    }
+    const data = await getResponse.json();
 
-    // Обходим input'ы внутри карточки и записываем их значения по имени поля
-    const inputs = card.querySelectorAll('input');
-    inputs.forEach((input) => {
-      member[input.name] = input.value.trim();   // .trim() убирает пробелы по краям
+    // 2. Собираем массив сотрудников из всех карточек на странице
+    const cards = document.querySelectorAll('#team-members .admin-card');
+    const newMembers = [];
+
+    cards.forEach((card) => {
+      const member = {
+        id: Number(card.dataset.id),     // id из data-атрибута карточки
+      };
+
+      // Обходим input'ы внутри карточки и записываем их значения по имени поля
+      const inputs = card.querySelectorAll('input');
+      inputs.forEach((input) => {
+        member[input.name] = input.value.trim();   // .trim() убирает пробелы по краям
+      });
+
+      newMembers.push(member);
     });
 
-    newMembers.push(member);
-  });
+    // 3. Подменяем в data только наш кусок
+    data.team.members = newMembers;
 
-  // 3. Подменяем в data только наш кусок
-  data.team.members = newMembers;
+    // 4. POST на сервер с обновлённым полным JSON
+    const postResponse = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-  // 4. POST на сервер с обновлённым полным JSON
-  await fetch('/api/data', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
+    if (!postResponse.ok) {
+      throw new Error('Сервер не принял сохранение');
+    }
+
+    // Успех
+    setTeamStatus('Сохранено ✓', 'success');
+
+    // Через 3 секунды убираем сообщение, чтобы не отвлекало
+    setTimeout(() => setTeamStatus('', ''), 3000);
+
+  } catch (err) {
+    setTeamStatus(`Не удалось сохранить: ${err.message}`, 'error');
+    console.error(err);                  // подробности в консоль для отладки
+  } finally {
+    saveBtn.disabled = false;            // всегда возвращаем кнопку в рабочий вид
+  }
 }
 
 function bindSaveButton() {
