@@ -7,12 +7,36 @@
 const express = require('express');     // фреймворк для сервера
 const fs = require('fs/promises');      // встроенная — асинхронная работа с файлами
 const path = require('path');           // встроенная — работа с путями
+const multer = require('multer');       // для приёма файлов из браузера (multipart/form-data)
 
 // === 2. Настройка ===
 const app = express();
 const PORT = process.env.PORT || 3000;  // можно переопределить переменной окружения
 const DATA_FILE = path.join(__dirname, '..', 'data', 'data.json');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+
+// Конфигурация multer для фото сотрудников.
+// Файлы кладёт в public/img/team/ с уникальными именами,
+// пускает только изображения, ограничивает 5 МБ.
+const teamPhotoStorage = multer.diskStorage({
+  destination: path.join(PUBLIC_DIR, 'img', 'team'),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const unique = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
+    cb(null, unique);
+  },
+});
+
+const teamPhotoUpload = multer({
+  storage: teamPhotoStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },       // 5 МБ
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith('image/')) {
+      return cb(new Error('Можно загружать только изображения'));
+    }
+    cb(null, true);
+  },
+});
 
 // === 3. Middleware ===
 
@@ -49,6 +73,21 @@ app.post('/api/data', async (req, res) => {
     console.error('Не получилось записать data.json:', err);
     res.status(500).json({ error: 'Не получилось сохранить данные' });
   }
+});
+
+// POST /api/upload/team-photo — принять файл от админки, сохранить, вернуть путь
+app.post('/api/upload/team-photo', (req, res) => {
+  // upload.single('photo') — ждём один файл в поле "photo"
+  teamPhotoUpload.single('photo')(req, res, (err) => {
+    if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: 'Файл не получен' });
+    }
+    // Возвращаем путь, который потом ляжет в data.json
+    res.json({ path: `/img/team/${req.file.filename}` });
+  });
 });
 
 // === 5. Запуск ===

@@ -66,7 +66,7 @@ function createMemberCard(member) {
   const nameField = createField('Имя', 'name', member.name);
   card.appendChild(nameField);
   card.appendChild(createField('Должность', 'position', member.position));
-  card.appendChild(createField('Фото', 'photo', member.photo));
+  card.appendChild(createPhotoField(member.photo));
 
   // Когда пользователь меняет имя в input — обновляем title в шапке в реальном времени
   const nameInput = nameField.querySelector('input');
@@ -75,6 +75,100 @@ function createMemberCard(member) {
   });
 
   return card;
+}
+
+// Создаёт поле «Фото» с превью и кнопкой загрузки файла.
+// Скрытый input[name="photo"] хранит путь и читается при сохранении —
+// поэтому остальная логика (saveTeam) ничего не знает про загрузку.
+function createPhotoField(value) {
+  const field = document.createElement('div');
+  field.className = 'admin-field';
+
+  const label = document.createElement('label');
+  label.className = 'admin-field__label';
+  label.textContent = 'Фото';
+
+  // Превью текущего фото
+  const preview = document.createElement('img');
+  preview.className = 'admin-photo-preview';
+  preview.alt = 'Превью';
+  if (value) {
+    preview.src = value;
+  } else {
+    preview.style.display = 'none';
+  }
+
+  // Текстовое поле с путём — источник правды для сохранения
+  const pathInput = document.createElement('input');
+  pathInput.className = 'admin-field__input';
+  pathInput.type = 'text';
+  pathInput.name = 'photo';
+  pathInput.value = value || '';
+  pathInput.placeholder = '/img/team/имя.png';
+
+  // Кнопка загрузки + скрытый file-input
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';        // в диалоге показывать только картинки
+  fileInput.style.display = 'none';
+
+  const uploadBtn = document.createElement('button');
+  uploadBtn.type = 'button';
+  uploadBtn.className = 'admin-btn';
+  uploadBtn.textContent = '📁 Загрузить файл';
+  uploadBtn.addEventListener('click', () => fileInput.click());
+
+  // Когда выбрали файл — отправляем на сервер
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'Загружаю…';
+
+    try {
+      const formData = new FormData();
+      formData.append('photo', file);
+
+      const response = await fetch('/api/upload/team-photo', {
+        method: 'POST',
+        body: formData,                // НЕТ headers: браузер сам поставит boundary
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error || 'Сервер не принял файл');
+      }
+
+      const result = await response.json();
+      pathInput.value = result.path;   // обновляем путь
+      preview.src = result.path;       // показываем новое фото
+      preview.style.display = 'block';
+    } catch (err) {
+      alert(`Не удалось загрузить: ${err.message}`);
+    } finally {
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = '📁 Загрузить файл';
+      fileInput.value = '';            // сброс, чтобы можно было загрузить тот же файл повторно
+    }
+  });
+
+  // Если пользователь правит путь руками — обновить превью
+  pathInput.addEventListener('input', () => {
+    if (pathInput.value) {
+      preview.src = pathInput.value;
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+    }
+  });
+
+  field.appendChild(label);
+  field.appendChild(preview);
+  field.appendChild(pathInput);
+  field.appendChild(fileInput);
+  field.appendChild(uploadBtn);
+  return field;
 }
 
 // Создаёт пару «лейбл + input» — повторяющийся блок
@@ -166,9 +260,11 @@ async function saveTeam() {
         id: Number(card.dataset.id),     // id из data-атрибута карточки
       };
 
-      // Обходим input'ы внутри карточки и записываем их значения по имени поля
+      // Обходим input'ы внутри карточки и записываем их значения по имени поля.
+      // Пропускаем поля без name (например, скрытый input[type=file] для загрузки).
       const inputs = card.querySelectorAll('input');
       inputs.forEach((input) => {
+        if (!input.name) return;
         member[input.name] = input.value.trim();   // .trim() убирает пробелы по краям
       });
 

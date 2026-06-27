@@ -223,6 +223,18 @@ body {
   cursor: not-allowed;                 /* курсор "запрещено" */
 }
 
+/* --- Превью фото в форме «Фото» --- */
+.admin-photo-preview {
+  display: block;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;                   /* картинка обрезается по краям, не искажается */
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 8px;
+  background-color: #f3f4f6;
+}
+
 /* ============================================================
    Сообщение о статусе (после Сохранить)
    admin.js будет добавлять класс --success или --error
