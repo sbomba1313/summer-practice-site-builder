@@ -132,15 +132,13 @@
     </div>
 </header>
     <main>
-        <h1 class="visually-hidden">TL:TECH</h1>
+        <h1 class="visually-hidden"><%= hero.title %></h1>
 
 <section class="section hero" id="hero">
             <video class="hero__video video-src" autoplay="" loop="" muted="" playsinline="" width="1920" height="1080" preload="auto" src="/upload/iblock/2c4/cujadwxyw3ysu98gpunkak7v02xiq1ue.mp4" data-src="/upload/iblock/2c4/cujadwxyw3ysu98gpunkak7v02xiq1ue.mp4"></video>
     
     <h2 class="hero__title heading heading--type-h1">
-        Стабильно растем<br>
-и принимаем новые вызовы<br>
-TravelTech индустрии    </h2>
+        <%= hero.subtitle %>    </h2>
 </section>    <section class="section section--rounded-left section--over advantages">
         <div class="section__anchor" id="advantages"></div>
 
@@ -169,35 +167,13 @@ TravelTech индустрии    </h2>
             </div>
 
             <ul class="advantages__list">
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">с 2008 года</span>
-                                                создаем инструменты<br>для отельеров                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">300+</span>
-                                                сотрудников в техотделе<br>и более 700 в компании                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">12 000+</span>
-                                                клиентов работают с нами                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">топ-50</span>
-                                                в рейтинге работодателей hh.ru 2022-2024 гг.                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">&gt;1,5 млн</span>
-                                                гостей в месяц бронируют через TravelLine                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">300+</span>
-                                                интеграций со сторонними сервисами                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">
-                                <img src="/site-assets/tl-logo.svg" alt="tl-logo" width="80" height="80">
-                            </span>
-                                                аккредитованная IT-компания                    </li>
-                                                        <li class="advantages__item">
-                                                    <span class="advantages__item-title">
-                                <img src="/site-assets/tl-logo.svg" alt="tl-logo" width="80" height="80">
-                            </span>
-                                                серебро в рейтинге лучших работодателей Forbes 2024 г.                    </li>
-                            </ul>
+<% hero.stats.forEach(function(stat) { %>
+                <li class="advantages__item">
+                    <span class="advantages__item-title"><%= stat.value %></span>
+                    <%= stat.label %>
+                </li>
+<% }); %>
+            </ul>
         </div>
     </section>
     <section class="section section--bg-add section--rounded-right section--over team">
