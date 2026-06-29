@@ -752,11 +752,16 @@
 
     <div class="platform__brands brands swiper">
         <div class="swiper-wrapper">
-<% clients.items.forEach(function(client) { %>
+<%
+   // Дублируем список логотипов несколько раз, чтобы бесконечная лента
+   // (Swiper loop) была достаточно длинной даже при малом числе клиентов.
+   for (var rep = 0; rep < 4; rep++) {
+     clients.items.forEach(function(client) { %>
             <div class="brands__item swiper-slide">
                 <img src="<%= client.logo %>" alt="<%= client.name %>">
             </div>
-<% }); %>
+<%   });
+   } %>
         </div>
     </div>
 </section>
