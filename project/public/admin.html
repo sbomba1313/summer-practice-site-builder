@@ -91,15 +91,52 @@
     <!-- ===== Вакансии ===== -->
     <section class="admin-section" id="vacancies-admin">
       <h2 class="admin-section__title">Вакансии</h2>
-      <!-- TODO: форму делает кто-то другой -->
-      <p class="admin-section__placeholder">Здесь будет форма редактирования вакансий.</p>
+
+      <div class="admin-field">
+        <label class="admin-field__label" for="vacancies-title-input">Заголовок блока</label>
+        <input class="admin-field__input" id="vacancies-title-input" type="text">
+      </div>
+
+      <div class="admin-field">
+        <label class="admin-field__label" for="vacancies-more-url-input">Ссылка на все вакансии</label>
+        <input class="admin-field__input" id="vacancies-more-url-input" type="url" placeholder="https://hh.ru/...">
+      </div>
+
+      <div id="vacancies-list" class="admin-list"></div>
+
+      <div class="admin-actions">
+        <button type="button" id="add-vacancy-btn" class="admin-btn">
+          + Добавить вакансию
+        </button>
+        <button type="button" id="save-vacancies-btn" class="admin-btn admin-btn--primary">
+          Сохранить вакансии
+        </button>
+      </div>
+
+      <p id="vacancies-status" class="admin-status"></p>
     </section>
 
     <!-- ===== Плюшки ===== -->
     <section class="admin-section" id="benefits-admin">
       <h2 class="admin-section__title">Плюшки</h2>
-      <!-- TODO: форму делает кто-то другой -->
-      <p class="admin-section__placeholder">Здесь будет форма редактирования плюшек.</p>
+
+      <div class="admin-field">
+        <label class="admin-field__label" for="benefits-title-input">Заголовок блока</label>
+        <input class="admin-field__input" id="benefits-title-input" type="text">
+      </div>
+
+      <div id="benefits-list" class="admin-list"></div>
+
+      <div class="admin-actions">
+        <button type="button" id="add-benefit-btn" class="admin-btn">
+          + Добавить плюшку
+        </button>
+        <button type="button" id="save-benefits-btn" class="admin-btn admin-btn--primary">
+          Сохранить плюшки
+        </button>
+      </div>
+
+      <p id="benefits-status" class="admin-status"></p>
     </section>
 
   </main>
@@ -108,5 +145,7 @@
   <script src="/js/admin-team.js"></script>
   <script src="/js/admin-hero.js"></script>
   <script src="/js/admin-logo.js"></script>
+  <script src="/js/admin-vacation.js"></script>
+  <script src="/js/admin-plushki.js"></script>
 </body>
 </html>
