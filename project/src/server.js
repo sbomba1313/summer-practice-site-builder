@@ -14,6 +14,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;  // можно переопределить переменной окружения
 const DATA_FILE = path.join(__dirname, '..', 'data', 'data.json');
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const VIEWS_DIR = path.join(__dirname, '..', 'views');
+
+// Шаблонизатор EJS: сервер будет подставлять данные в views/index.ejs
+app.set('view engine', 'ejs');
+app.set('views', VIEWS_DIR);
 
 // Конфигурация multer для фото сотрудников.
 // Файлы кладёт в public/img/team/ с уникальными именами,
@@ -44,9 +49,24 @@ const teamPhotoUpload = multer({
 // после этого req.body — готовый JS-объект, а не сырая строка.
 app.use(express.json());
 
+// Главная страница: читаем data.json и рендерим шаблон оригинала травеллайна,
+// подставляя в управляемые блоки актуальные данные.
+// Этот роут идёт ДО express.static, чтобы перехватить "/" раньше статики.
+app.get('/', async (req, res) => {
+  try {
+    const text = await fs.readFile(DATA_FILE, 'utf-8');
+    const data = JSON.parse(text);
+    res.render('index', data);     // views/index.ejs + поля data становятся переменными
+  } catch (err) {
+    console.error('Не получилось отрендерить главную:', err);
+    res.status(500).send('Ошибка загрузки страницы');
+  }
+});
+
 // Раздавать любые файлы из папки public/ автоматически:
-// GET /blocks/team.html  → public/blocks/team.html
+// GET /admin.html → public/admin.html
 // GET /img/team/alexey.png → public/img/team/alexey.png
+// GET /site-assets/style.min.css → public/site-assets/style.min.css
 app.use(express.static(PUBLIC_DIR));
 
 // === 4. API ===

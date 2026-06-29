@@ -1,0 +1,105 @@
+/* ============================================================
+   Заплатки для статичной копии travelline.tech.
+   Оригинал полагался на JS (scroll-анимации, masonry-раскладку,
+   Vue-форму), который при сохранении не утянулся. Возвращаем
+   контент в аккуратный статичный вид.
+   Подключается ПОСЛЕ style.min.css, поэтому переопределяет.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Блок «Преимущества/статистика».
+   В оригинале — «прилипающая» секция: большое число слева
+   меняется по скроллу, список справа подсвечивается. Без JS
+   это не работает. Делаем простую аккуратную сетку «число + текст».
+   ------------------------------------------------------------ */
+.advantages__container {
+  grid-template-columns: 1fr !important;   /* одна колонка вместо двух */
+  gap: 0 !important;
+}
+
+/* Левая колонка с дублирующими крупными цифрами — прячем */
+.advantages__title {
+  display: none !important;
+}
+
+/* Список делаем сеткой 3 в ряд */
+.advantages__list {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 32px !important;
+  padding: 0 !important;
+}
+
+/* Каждый пункт: число сверху, текст снизу, компактно */
+.advantages__item {
+  min-height: auto !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 8px;
+  font-size: 18px !important;
+  line-height: 1.4 !important;
+  color: #323e59 !important;
+}
+
+/* Число — крупное, фирменно-синее */
+.advantages__item-title {
+  display: block !important;
+  font-size: 48px !important;
+  line-height: 1 !important;
+  color: #507bce !important;
+}
+
+/* ------------------------------------------------------------
+   Галерея «жизнь компании».
+   Оригинал раскидывал фото через JS (masonry). Делаем masonry
+   средствами CSS-колонок — фото разной высоты, плотно.
+   ------------------------------------------------------------ */
+.gallery__container {
+  display: block !important;
+  columns: 3;
+  column-gap: 20px !important;
+}
+
+.gallery__item {
+  break-inside: avoid;          /* карточку не разрывать между колонок */
+  margin: 0 0 20px 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  transform: none !important;
+  padding: 0 !important;
+}
+
+.gallery__item img {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+  border-radius: 16px;
+}
+
+/* Карточки с битым видео (src вёл на сервер travelline) — скрываем */
+.gallery__item:has(video) {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------
+   Контактная форма.
+   Видео-превью грузилось с сервера travelline (битое),
+   форма — Vue-компонент (без Vue пустой). Прячем оба,
+   оставляя текстовое приглашение.
+   ------------------------------------------------------------ */
+.contact-form__description-img {
+  display: none !important;
+}
+
+.contact-form__form {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------
+   Вакансии: ряд карточек шире экрана. Даём горизонтальный
+   скролл, чтобы можно было листать, и отступ снизу под скроллбар.
+   ------------------------------------------------------------ */
+.vacancies__container {
+  overflow-x: auto !important;
+  padding-bottom: 16px;
+}
