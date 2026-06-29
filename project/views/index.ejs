@@ -169,7 +169,13 @@
             <ul class="advantages__list">
 <% hero.stats.forEach(function(stat) { %>
                 <li class="advantages__item">
-                    <span class="advantages__item-title"><%= stat.value %></span>
+                    <span class="advantages__item-title">
+<% if (stat.value === 'logo') { %>
+                        <img src="/site-assets/tl-logo.svg" alt="tl-logo" width="80" height="80">
+<% } else { %>
+                        <%= stat.value %>
+<% } %>
+                    </span>
                     <%= stat.label %>
                 </li>
 <% }); %>
