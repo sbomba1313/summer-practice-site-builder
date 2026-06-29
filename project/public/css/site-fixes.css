@@ -103,3 +103,11 @@
   overflow-x: auto !important;
   padding-bottom: 16px;
 }
+
+/* ------------------------------------------------------------
+   Логотипы клиентов крупнее.
+   ------------------------------------------------------------ */
+.brands__item img {
+  height: 90px !important;
+  width: auto !important;
+}

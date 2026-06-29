@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
       slidesPerView: 'auto',
       spaceBetween: 40,
       loop: true,
-      speed: 20000,              // ещё медленнее
+      speed: 12000,              // скорость ленты (меньше — быстрее)
       autoplay: {
         delay: 0,
         disableOnInteraction: false,
