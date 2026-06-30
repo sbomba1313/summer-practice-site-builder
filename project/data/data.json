@@ -106,6 +106,36 @@
   "clients": {
     "items": [
       {
+        "id": 1,
+        "name": "Русь Ессентуки",
+        "logo": "/img/clients/rus.svg"
+      },
+      {
+        "id": 2,
+        "name": "Сочи Парк",
+        "logo": "/img/clients/sochi-park.svg"
+      },
+      {
+        "id": 3,
+        "name": "Premium Park Hotel",
+        "logo": "/img/clients/premium-park.svg"
+      },
+      {
+        "id": 4,
+        "name": "VODA Акваклуб",
+        "logo": "/img/clients/aquaclub.svg"
+      },
+      {
+        "id": 5,
+        "name": "РЖД-Здоровье",
+        "logo": "/img/clients/rzd-health.svg"
+      },
+      {
+        "id": 6,
+        "name": "Catherine Art Hotel",
+        "logo": "/img/clients/catherine-art.svg"
+      },
+      {
         "id": 7,
         "name": "Cosmos Moscow VDNH Hotel",
         "logo": "/img/clients/cosmos.svg"
